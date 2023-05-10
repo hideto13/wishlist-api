@@ -1,7 +1,7 @@
 const Wish = require('../models/wish')
 const NotFoundError = require('../errors/NotFound')
 const ForbiddenError = require('../errors/Forbidden')
-const BadRequestError = require('../errors/BadRequesError')
+const BadRequestError = require('../errors/BadRequest')
 
 const getWishObj = wish => {
   const obj = {
@@ -29,7 +29,9 @@ module.exports.createWish = (req, res, next) => {
     name,
     owner: req.user._id,
   })
-    .then(wish => res.send(getWishObj(wish)))
+    .then(wish => {
+      res.send(getWishObj(wish))
+    })
     .catch(err => {
       if (err.name === 'ValidationError') {
         next(
