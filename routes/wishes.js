@@ -5,10 +5,10 @@ const { getWishes, createWish, deleteWish } = require('../controllers/wishes')
 router.get('/', getWishes)
 
 router.delete(
-  '/:wishId',
+  '/:_id',
   celebrate({
     params: Joi.object().keys({
-      wishId: Joi.number().required(),
+      _id: Joi.string().length(24).hex().required(),
     }),
   }),
   deleteWish

@@ -5,6 +5,7 @@ const BadRequestError = require('../errors/BadRequest')
 
 const getWishObj = wish => {
   const obj = {
+    _id: wish._id,
     description: wish.description,
     image: wish.image,
     link: wish.link,
@@ -48,7 +49,7 @@ module.exports.createWish = (req, res, next) => {
 }
 
 module.exports.deleteWish = (req, res, next) => {
-  Wish.findById(req.params.wishId)
+  Wish.findById(req.params._id)
     .orFail(() => {
       throw new NotFoundError('id not found')
     })
@@ -58,7 +59,7 @@ module.exports.deleteWish = (req, res, next) => {
       }
     })
     .then(() =>
-      Wish.deleteOne({ _id: req.params.wishId }).then(wish =>
+      Wish.deleteOne({ _id: req.params._id }).then(wish =>
         res.send(getWishObj(wish))
       )
     )
