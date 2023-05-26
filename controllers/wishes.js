@@ -10,12 +10,13 @@ const getWishObj = wish => {
     image: wish.image,
     link: wish.link,
     name: wish.name,
+    owner: wish.owner,
   }
   return obj
 }
 
-module.exports.getWishes = (req, res, next) => {
-  Wish.find({})
+module.exports.getUserWishes = (req, res, next) => {
+  Wish.find({ owner: req.user._id })
     .then(wishes => res.send(wishes.map(wish => getWishObj(wish))))
     .catch(next)
 }

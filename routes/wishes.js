@@ -1,8 +1,13 @@
 const router = require('express').Router()
 const { celebrate, Joi } = require('celebrate')
-const { getWishes, createWish, deleteWish } = require('../controllers/wishes')
+const validator = require('validator')
+const {
+  getUserWishes,
+  createWish,
+  deleteWish,
+} = require('../controllers/wishes')
 
-router.get('/', getWishes)
+router.get('/', getUserWishes)
 
 router.delete(
   '/:_id',
@@ -21,14 +26,20 @@ router.post(
       description: Joi.string(),
       image: Joi.string()
         .required()
-        .pattern(
-          /https*:\/\/(www.)?([A-Za-z0-9]{1}[A-Za-z0-9-]*\.?)*\.{1}[A-Za-z0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/
-        ),
+        .custom((value, helpers) => {
+          if (validator.isURL(value)) {
+            return value
+          }
+          return helpers.message('Incorrect image')
+        }),
       link: Joi.string()
         .required()
-        .pattern(
-          /https*:\/\/(www.)?([A-Za-z0-9]{1}[A-Za-z0-9-]*\.?)*\.{1}[A-Za-z0-9-]{2,8}(\/([\w#!:.?+=&%@!\-/])*)?/
-        ),
+        .custom((value, helpers) => {
+          if (validator.isURL(value)) {
+            return value
+          }
+          return helpers.message('Incorrect link')
+        }),
       name: Joi.string().required(),
     }),
   }),

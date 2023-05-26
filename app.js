@@ -6,6 +6,7 @@ const cors = require('cors')
 const { errors } = require('celebrate')
 const auth = require('./middlewares/auth')
 const { requestLogger, errorLogger } = require('./middlewares/logger')
+const errorHandler = require('./middlewares/errorHandler')
 const { MONGO_DATA_BASE, PORT } = require('./config')
 const NotFoundError = require('./errors/NotFound')
 
@@ -30,12 +31,6 @@ app.use(errorLogger)
 
 app.use(errors())
 
-app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500
-  const message = statusCode === 500 ? 'Server error' : err.message
-
-  res.status(statusCode).send({ message })
-  next()
-})
+app.use(errorHandler)
 
 app.listen(PORT)
