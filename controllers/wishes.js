@@ -11,6 +11,7 @@ const getWishObj = wish => {
     link: wish.link,
     name: wish.name,
     owner: wish.owner,
+    price: wish.price,
   }
   return obj
 }
@@ -22,13 +23,14 @@ module.exports.getUserWishes = (req, res, next) => {
 }
 
 module.exports.createWish = (req, res, next) => {
-  const { description, image, link, name } = req.body
+  const { description, image, link, name, price } = req.body
 
   Wish.create({
     description,
     image,
     link,
     name,
+    price,
     owner: req.user._id,
   })
     .then(wish => {

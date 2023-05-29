@@ -41,6 +41,7 @@ router.post(
           return helpers.message('Incorrect link')
         }),
       name: Joi.string().required(),
+      price: Joi.number().required(),
     }),
   }),
   createWish

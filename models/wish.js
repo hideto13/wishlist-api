@@ -29,6 +29,10 @@ const wishSchema = new mongoose.Schema({
       message: 'Invalid buy link',
     },
   },
+  price: {
+    type: Number,
+    required: true,
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
