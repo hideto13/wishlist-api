@@ -74,3 +74,9 @@ module.exports.deleteWish = (req, res, next) => {
       }
     })
 }
+
+module.exports.getUserWishesById = (req, res, next) => {
+  Wish.find({ owner: req.params._userId })
+    .then(wishes => res.send(wishes.map(wish => getWishObj(wish))))
+    .catch(next)
+}
