@@ -38,24 +38,20 @@ router.post(
   celebrate({
     body: Joi.object().keys({
       description: Joi.string(),
-      image: Joi.string()
-        .required()
-        .custom((value, helpers) => {
-          if (validator.isURL(value)) {
-            return value
-          }
-          return helpers.message('Incorrect image')
-        }),
-      link: Joi.string()
-        .required()
-        .custom((value, helpers) => {
-          if (validator.isURL(value)) {
-            return value
-          }
-          return helpers.message('Incorrect link')
-        }),
+      image: Joi.string().custom((value, helpers) => {
+        if (validator.isURL(value)) {
+          return value
+        }
+        return helpers.message('Incorrect image')
+      }),
+      link: Joi.string().custom((value, helpers) => {
+        if (validator.isURL(value)) {
+          return value
+        }
+        return helpers.message('Incorrect link')
+      }),
       name: Joi.string().required(),
-      price: Joi.number().required(),
+      price: Joi.number(),
     }),
   }),
   createWish

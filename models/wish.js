@@ -11,7 +11,6 @@ const wishSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
     validate: {
       validator(v) {
         return validator.isURL(v)
@@ -21,7 +20,6 @@ const wishSchema = new mongoose.Schema({
   },
   link: {
     type: String,
-    required: true,
     validate: {
       validator(v) {
         return validator.isURL(v)
@@ -31,7 +29,6 @@ const wishSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
