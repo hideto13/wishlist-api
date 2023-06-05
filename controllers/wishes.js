@@ -75,6 +75,41 @@ module.exports.deleteWish = (req, res, next) => {
     })
 }
 
+module.exports.editWish = (req, res, next) => {
+  const { name, description, link, image, price } = req.body
+
+  Wish.findByIdAndUpdate(
+    req.params._id,
+    {
+      name,
+      description,
+      link,
+      image,
+      price,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .orFail(() => {
+      throw new NotFoundError('ID not found')
+    })
+    .then(wish => res.send(getWishObj(wish)))
+    .catch(err => {
+      if (err.name === 'ValidationError') {
+        next(
+          new BadRequestError(
+            `${Object.values(err.errors)
+              .map(error => error.message)
+              .join(', ')}`
+          )
+        )
+      }
+      next(err)
+    })
+}
+
 module.exports.getUserWishesById = (req, res, next) => {
   Wish.find({ owner: req.params._userId })
     .then(wishes => res.send(wishes.map(wish => getWishObj(wish))))

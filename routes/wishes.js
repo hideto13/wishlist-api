@@ -7,6 +7,7 @@ const {
   createWish,
   deleteWish,
   getUserWishesById,
+  editWish,
 } = require('../controllers/wishes')
 
 router.get('/', auth, getUserWishes)
@@ -30,6 +31,34 @@ router.delete(
     }),
   }),
   deleteWish
+)
+
+router.patch(
+  '/:_id',
+  auth,
+  celebrate({
+    params: Joi.object().keys({
+      _id: Joi.string().length(24).hex().required(),
+    }),
+    body: Joi.object().keys({
+      description: Joi.string(),
+      image: Joi.string().custom((value, helpers) => {
+        if (validator.isURL(value)) {
+          return value
+        }
+        return helpers.message('Incorrect image')
+      }),
+      link: Joi.string().custom((value, helpers) => {
+        if (validator.isURL(value)) {
+          return value
+        }
+        return helpers.message('Incorrect link')
+      }),
+      name: Joi.string(),
+      price: Joi.number(),
+    }),
+  }),
+  editWish
 )
 
 router.post(
