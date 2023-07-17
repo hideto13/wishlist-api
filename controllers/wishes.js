@@ -1,7 +1,9 @@
 const Wish = require('../models/wish')
+const path = require('path')
 const NotFoundError = require('../errors/NotFound')
 const ForbiddenError = require('../errors/Forbidden')
 const BadRequestError = require('../errors/BadRequest')
+const assetsFolder = path.join(__dirname, '../assets')
 
 const getWishObj = wish => {
   const obj = {
@@ -24,6 +26,9 @@ module.exports.getUserWishes = (req, res, next) => {
 
 module.exports.createWish = (req, res, next) => {
   const { description, image, link, name, price } = req.body
+  const { imageBN } = req.files;
+
+  imageBN.mv(path.join(assetsFolder, imageBN.name))
 
   Wish.create({
     description,

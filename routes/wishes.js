@@ -73,6 +73,7 @@ router.post(
         }
         return helpers.message('Incorrect image')
       }),
+      imageBN:Joi.any(), 
       link: Joi.string().custom((value, helpers) => {
         if (validator.isURL(value)) {
           return value

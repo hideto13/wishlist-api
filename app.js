@@ -1,5 +1,6 @@
 require('dotenv').config()
 const express = require('express')
+const fileUpload = require('express-fileupload')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -20,6 +21,7 @@ mongoose.connect(MONGO_DATA_BASE)
 app.use(requestLogger)
 
 app.use(cors())
+app.use(fileUpload())
 
 app.use(require('./routes'))
 
